@@ -1,3 +1,14 @@
+/**
+ * App.js
+ * 
+ * [설명] index.html의 root div 안에 출력될 내용.
+ *        address widget의 요청을 MessageBroker로 받아
+ *        video.js의 video들을 변경한다.
+ * 
+ * @author : Seung-hun Ji
+ * @since : 2018-02-08
+ */
+
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -8,85 +19,45 @@ class App extends Component {
   
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = { //초기 state는 비어있는 상태
       videos : []
     };
   }
-
-  _test = (_data) => {
-    console.log(this.state);
-    console.log(_data.videosrc);
-    
-    this.setState({
-      videos : _data.videosrc
-    })
-  }
-
-  _initialRender = () => {
-    this.setState({
+  
+  _initialRender = () => { 
+    this.setState({ //시작 시, 4개의 비디오 태그를 생성하기 위해 사용
       videos : [null, null, null, null]
     })
 
+    //MessageBroker 객체 생성, 명령 수신 대기
     let msgBroker = new MessageBroker();
-    msgBroker.addCommandHandler('From_addr_To_video_Content_address', this._test);
+    msgBroker.addCommandHandler('From_addr_To_video_Content_address', this._setVideo);
   }
 
-  _getViedoSrc = () => {
-      console.log("App Set State")
-      let bgArray = [];
-      let bgVideo = [];
-      let bgNum;
-
-      for( let i = 1 ; i <= 10 ; i++ ) {
-        bgArray.push(i);
-      }
-
-      for( let i = 0 ; i < 4 ; i++ ) {
-				bgNum = Math.floor(Math.random() * bgArray.length); //배열의 개수만큼의 범위에서 난수 생성
-				let rdm = bgArray.splice(bgNum, 1); //배열 요소를 빼고 빠진 값을 가져온다.
-				rdm = rdm.toString(); //해당 숫자를 문자로 변경
-				let str = "./video/sample" + rdm + ".mp4"; //sample 동영상 결정
-				bgVideo.push({src : str}); //영상 링크 삽입
-      }
-
-      console.log("bgVideo List")
-      console.log(bgVideo)
-      
-      this.setState({ //render할 때 변경됨
-        videos : bgVideo
-      });
-      
+  //widget으로부터 받은 데이터 중 videosrc를 받아 처리
+  _setVideo = (_data) => {
+    this.setState({
+      videos: _data.videosrc
+    })
   }
-
-  _renderViedoList = () => {
+  
+  //시작 시, 또는 변화가 있을 때마다 mapping을 통해 video 태그 변경
+  _renderViedoList = () => { 
     let result = this.state.videos.map( (_video, _index) => {
-      console.log("Move to video.js")
-      console.log(_video, _index);
 
       return <Video key={_index} contentLink = {_video}/>
     })
     return result;
   }
 
+  //render 전에 setState로 태그 생성 준비
   componentWillMount() {
     this._initialRender();
   }
 
-  componentDidMount() {
-    // let msgBroker = new MessageBroker();
-    // msgBroker.addCommandHandler('From_addr_To_video_Content_address', function(data) {
-      
-    //   console.log("Got a signal", data);
-    //});
-  }
-
-  componentDidUpdate() {
-    console.log("componentDidUpdate")
-  }
-  
   render() {
     return (
-      <div className = "App" ref="mainDiv" >
+      <div className = "App">
       {
         this._renderViedoList()
       }
