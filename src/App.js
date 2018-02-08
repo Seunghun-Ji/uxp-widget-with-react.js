@@ -1,3 +1,9 @@
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import './App.css';
+import Video from './component/video';
+import MessageBroker from './lib/messageBroker';
+
 /**
  * App.js
  * 
@@ -8,13 +14,6 @@
  * @author : Seung-hun Ji
  * @since : 2018-02-08
  */
-
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Video from './component/video';
-import MessageBroker from './lib/messageBroker';
-
 class App extends Component {
   
   constructor(props) {

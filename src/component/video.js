@@ -1,3 +1,6 @@
+import React, { Component } from 'react';
+import './video.css';
+
 /**
  * video.js
  * 
@@ -8,10 +11,6 @@
  * @author : Seung-hun Ji
  * @since : 2018-02-08
  */
-
-import React, { Component } from 'react';
-import './video.css';
-
 class Video extends Component {
 
     constructor(props) {
