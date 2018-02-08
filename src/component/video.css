@@ -1,0 +1,13 @@
+.videobox {
+	display: inline-block;
+	width: 48%;
+	height: 48%;
+	padding: 0;
+	margin: 0;
+	border: 1px solid;
+}
+
+video{
+	width: 99%;
+	height: 99%;
+}
